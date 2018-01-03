@@ -24,4 +24,28 @@ public class Money {
         Money result = new Money(quantity, this.currency);
         return result;
     }
+    public Money change (BigDecimal ratio, Currency to) {
+        this.quantity = this.quantity.multiply(ratio);
+        Money result = new Money(this.quantity, this.currency);
+        return result;
+    }
+    public boolean equals (Object other) {
+        if (other.hashCode() == this.hashCode()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public int hashCode() {
+        int hash = 1;
+        hash = hash * 31 + quantity.hashCode();
+        hash = hash * 17 + currency.hashCode();
+        return hash;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }
