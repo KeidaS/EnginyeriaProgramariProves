@@ -4,6 +4,7 @@ public class Money {
     BigDecimal quantity;
     Currency currency;
 
+
     public Money(BigDecimal quantity, Currency currency) {
         this.quantity = quantity;
         this.currency = currency;
@@ -12,21 +13,31 @@ public class Money {
         return currency;
     }
     public Money add (Money other) throws  IllegalArgumentException{
-        other.quantity = quantity.add(other.quantity);
-        return other;
+        if (other.currency.equals(this.currency)) {
+            BigDecimal totalQuantity = this.quantity.add(other.quantity);
+            Money result = new Money(totalQuantity, other.currency);
+            return result;
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
     public Money subtract (Money other) throws IllegalArgumentException{
-        other.quantity = quantity.subtract(other.quantity);
-        return other;
+        if (other.currency.equals(this.currency)) {
+            BigDecimal totalQuantity = this.quantity.subtract(other.quantity);
+            Money result = new Money(totalQuantity, other.currency);
+            return result;
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
-    public Money multiply (int multiplier) throws IllegalArgumentException{
-        this.quantity = this.quantity.multiply(BigDecimal.valueOf(multiplier));
-        Money result = new Money(quantity, this.currency);
+    public Money multiply (int multiplier) {
+        BigDecimal totalQuantity = this.quantity.multiply(BigDecimal.valueOf(multiplier));
+        Money result = new Money(totalQuantity, this.currency);
         return result;
     }
     public Money change (BigDecimal ratio, Currency to) {
-        this.quantity = this.quantity.multiply(ratio);
-        Money result = new Money(this.quantity, this.currency);
+        BigDecimal totalQuantity = this.quantity.multiply(ratio);
+        Money result = new Money(totalQuantity, to);
         return result;
     }
     public boolean equals (Object other) {
