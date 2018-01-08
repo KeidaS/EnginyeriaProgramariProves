@@ -66,6 +66,6 @@ public class Money {
 
     @Override
     public String toString() {
-        return super.toString();
+        return quantity.toString() + currency.toString();
     }
 }

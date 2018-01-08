@@ -19,6 +19,6 @@ public class Ticket {
     }
     @Override
     public String toString() {
-        return super.toString();
+        return name.toString();
     }
 }
