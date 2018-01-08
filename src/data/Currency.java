@@ -24,6 +24,6 @@ public class Currency {
 
     @Override
     public String toString() {
-        return super.toString();
+        return name.toString();
     }
 }

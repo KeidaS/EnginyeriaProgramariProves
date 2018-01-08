@@ -14,10 +14,13 @@ public class Money {
     public Currency getCurrency() {
         return currency;
     }
+    public BigDecimal getQuantity() {
+        return quantity;
+    }
     public Money add (Money other) throws  IllegalArgumentException{
         if (other.currency.equals(this.currency)) {
             BigDecimal totalQuantity = this.quantity.add(other.quantity);
-            Money result = new Money(totalQuantity, other.currency);
+            Money result = new Money(totalQuantity.setScale(2, BigDecimal.ROUND_UP), other.currency);
             return result;
         } else {
             throw new IllegalArgumentException();
@@ -26,7 +29,7 @@ public class Money {
     public Money subtract (Money other) throws IllegalArgumentException{
         if (other.currency.equals(this.currency)) {
             BigDecimal totalQuantity = this.quantity.subtract(other.quantity);
-            Money result = new Money(totalQuantity, other.currency);
+            Money result = new Money(totalQuantity.setScale(2, BigDecimal.ROUND_UP), other.currency);
             return result;
         } else {
             throw new IllegalArgumentException();
@@ -34,13 +37,17 @@ public class Money {
     }
     public Money multiply (int multiplier) {
         BigDecimal totalQuantity = this.quantity.multiply(BigDecimal.valueOf(multiplier));
-        Money result = new Money(totalQuantity, this.currency);
+        Money result = new Money(totalQuantity.setScale(2, BigDecimal.ROUND_UP), this.currency);
         return result;
     }
     public Money change (BigDecimal ratio, Currency to) {
-        BigDecimal totalQuantity = this.quantity.multiply(ratio);
-        Money result = new Money(totalQuantity, to);
-        return result;
+        if (to.equals(this.currency)) {
+            throw new IllegalArgumentException();
+        } else {
+            BigDecimal totalQuantity = this.quantity.multiply(ratio);
+            Money result = new Money(totalQuantity.setScale(2, BigDecimal.ROUND_UP), to);
+            return result;
+        }
     }
     public boolean equals (Object other) {
         if (other.hashCode() == this.hashCode()) {
