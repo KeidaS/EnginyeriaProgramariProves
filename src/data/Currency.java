@@ -7,6 +7,7 @@ public class Currency {
     public Currency(String name) {
         this.name = name;
     }
+
     public boolean equals(Object other) {
         if (other.hashCode() == this.hashCode()) {
             return true;
@@ -14,6 +15,7 @@ public class Currency {
             return false;
         }
     }
+
     public int hashCode() {
         int hash = 1;
         hash = hash * 31 + name.hashCode();
