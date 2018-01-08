@@ -2,7 +2,9 @@ package portfolio;
 
 import data.*;
 import services.MoneyExchange;
+import services.RatioDoesNotExistException;
 import services.StockExchange;
+import services.TicketDoesNotExistException;
 
 public class Stock implements Investment{
     Ticket ticket;
@@ -14,7 +16,8 @@ public class Stock implements Investment{
     }
 
     @Override
-    public Money evaluate(Currency currencyTo, MoneyExchange moneyEx, StockExchange stockExchange) throws EvaluationException {
-        return null;
+    public Money evaluate(Currency currencyTo, MoneyExchange moneyEx, StockExchange stockExchange) throws EvaluationException, TicketDoesNotExistException {
+        Money value = stockExchange.value(ticket);
+        return value.multiply(this.numShares);
     }
 }
