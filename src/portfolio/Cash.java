@@ -1,7 +1,8 @@
 package portfolio;
 import data.*;
-import services.MoneyExchange;
-import services.StockExchange;
+import services.*;
+
+import java.math.BigDecimal;
 
 public class Cash implements Investment {
     Money money;
@@ -11,7 +12,7 @@ public class Cash implements Investment {
     }
 
     @Override
-    public Money evaluate(Currency currencyTo, MoneyExchange moneyEx, StockExchange stockExchange) throws EvaluationException {
-        return null;
+    public Money evaluate(Currency currencyTo, MoneyExchange moneyEx, StockExchange stockExchange) throws EvaluationException, RatioDoesNotExistException {
+        return this.money.change((moneyEx.exchangeRatio(this.money.getCurrency(), currencyTo)), currencyTo);
     }
 }
