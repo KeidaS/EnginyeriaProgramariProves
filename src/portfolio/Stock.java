@@ -16,8 +16,12 @@ public class Stock implements Investment{
     }
 
     @Override
-    public Money evaluate(Currency currencyTo, MoneyExchange moneyEx, StockExchange stockExchange) throws EvaluationException, TicketDoesNotExistException {
+    public Money evaluate(Currency currencyTo, MoneyExchange moneyEx, StockExchange stockExchange) throws EvaluationException, TicketDoesNotExistException, RatioDoesNotExistException {
         Money value = stockExchange.value(ticket);
-        return value.multiply(this.numShares);
+        if (moneyEx == null) {
+            return value;
+        } else {
+            return value.change((moneyEx.exchangeRatio(value.getCurrency(), currencyTo)), currencyTo);
+        }
     }
 }
