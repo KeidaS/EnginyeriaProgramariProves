@@ -1,4 +1,5 @@
 package services;
+
 public class RatioDoesNotExistException extends Exception{
     String text;
 

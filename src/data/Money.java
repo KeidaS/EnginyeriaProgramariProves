@@ -6,9 +6,8 @@ public class Money {
     BigDecimal quantity;
     Currency currency;
 
-
     public Money(BigDecimal quantity, Currency currency) {
-        this.quantity = quantity;
+        this.quantity = quantity.setScale(2, BigDecimal.ROUND_UP);
         this.currency = currency;
     }
     public Currency getCurrency() {
@@ -20,7 +19,7 @@ public class Money {
     public Money add (Money other) throws  IllegalArgumentException{
         if (other.currency.equals(this.currency)) {
             BigDecimal totalQuantity = this.quantity.add(other.quantity);
-            Money result = new Money(totalQuantity.setScale(2, BigDecimal.ROUND_UP), other.currency);
+            Money result = new Money(totalQuantity, other.currency);
             return result;
         } else {
             throw new IllegalArgumentException();
@@ -29,7 +28,7 @@ public class Money {
     public Money subtract (Money other) throws IllegalArgumentException{
         if (other.currency.equals(this.currency)) {
             BigDecimal totalQuantity = this.quantity.subtract(other.quantity);
-            Money result = new Money(totalQuantity.setScale(2, BigDecimal.ROUND_UP), other.currency);
+            Money result = new Money(totalQuantity, other.currency);
             return result;
         } else {
             throw new IllegalArgumentException();
@@ -37,7 +36,7 @@ public class Money {
     }
     public Money multiply (int multiplier) {
         BigDecimal totalQuantity = this.quantity.multiply(BigDecimal.valueOf(multiplier));
-        Money result = new Money(totalQuantity.setScale(2, BigDecimal.ROUND_UP), this.currency);
+        Money result = new Money(totalQuantity, this.currency);
         return result;
     }
     public Money change (BigDecimal ratio, Currency to) {
@@ -45,7 +44,7 @@ public class Money {
             throw new IllegalArgumentException();
         } else {
             BigDecimal totalQuantity = this.quantity.multiply(ratio);
-            Money result = new Money(totalQuantity.setScale(2, BigDecimal.ROUND_UP), to);
+            Money result = new Money(totalQuantity, to);
             return result;
         }
     }

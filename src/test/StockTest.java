@@ -4,10 +4,7 @@ import data.*;
 import portfolio.*;
 import static org.junit.Assert.*;
 import org.junit.Test;
-import services.MoneyExchange;
-import services.RatioDoesNotExistException;
-import services.StockExchange;
-import services.TicketDoesNotExistException;
+import services.*;
 
 import java.math.BigDecimal;
 
@@ -45,16 +42,16 @@ public class StockTest {
     @Test
     public void testCorrectEvaluateWithoutMoneyExchange() throws EvaluationException, RatioDoesNotExistException, TicketDoesNotExistException {
         Stock stock = new Stock (new Ticket("CBK"), 3);
-        CorrectTicketValue value = new CorrectTicketValue();
+        StockExchange value = new CorrectTicketValue();
         Money result = stock.evaluate(new Currency("Dollars"), null, value);
-        assertEquals(new BigDecimal(5), result.getQuantity());
+        assertEquals(new BigDecimal("5.00"), result.getQuantity());
         assertEquals("Euros", result.getCurrency().toString());
     }
     @Test
     public void testCorrectEvaluateWithMoneyExchange() throws EvaluationException, RatioDoesNotExistException, TicketDoesNotExistException {
         Stock stock = new Stock (new Ticket("CBK"), 3);
-        CorrectTicketValue value = new CorrectTicketValue();
-        CorrectRatio moneyEx = new CorrectRatio();
+        StockExchange value = new CorrectTicketValue();
+        MoneyExchange moneyEx = new CorrectRatio();
         Money result = stock.evaluate(new Currency ("Dollars"), moneyEx, value);
         assertEquals(new BigDecimal("12.00"), result.getQuantity());
         assertEquals("Dollars", result.getCurrency().toString());
@@ -62,28 +59,28 @@ public class StockTest {
     @Test(expected = TicketDoesNotExistException.class)
     public void testTicketDoesNotExistExceptionOnEvaluateWithoutMoneyExchange() throws EvaluationException, RatioDoesNotExistException, TicketDoesNotExistException {
         Stock stock = new Stock (new Ticket("CBK"), 3);
-        IncorrectTicketValue value = new IncorrectTicketValue();
+        StockExchange value = new IncorrectTicketValue();
         Money result = stock.evaluate(new Currency("Dollars"), null, value);
     }
     @Test(expected = TicketDoesNotExistException.class)
-    public void testTicketDoesNotExistExceptionOnEvaluateWithoMoneyExchange() throws EvaluationException, RatioDoesNotExistException, TicketDoesNotExistException {
+    public void testTicketDoesNotExistExceptionOnEvaluateWithMoneyExchange() throws EvaluationException, RatioDoesNotExistException, TicketDoesNotExistException {
         Stock stock = new Stock (new Ticket("CBK"), 3);
-        IncorrectTicketValue value = new IncorrectTicketValue();
-        CorrectRatio moneyEx = new CorrectRatio();
+        StockExchange value = new IncorrectTicketValue();
+        MoneyExchange moneyEx = new CorrectRatio();
         Money result = stock.evaluate(new Currency("Dollars"), moneyEx, value);
     }
     @Test(expected = RatioDoesNotExistException.class)
     public void testRatioDoesNotExistException() throws TicketDoesNotExistException, RatioDoesNotExistException, EvaluationException {
         Stock stock = new Stock (new Ticket("CBK"), 3);
-        CorrectTicketValue value = new CorrectTicketValue();
-        IncorrectRatio moneyEx = new IncorrectRatio();
+        StockExchange value = new CorrectTicketValue();
+        MoneyExchange moneyEx = new IncorrectRatio();
         Money result = stock.evaluate(new Currency("Dollars"), moneyEx, value);
     }
     @Test(expected = EvaluationException.class)
-    public void testEvaluationExceptionDuringEvaluation() throws EvaluationException, RatioDoesNotExistException {
-        CorrectTicketValue value = new CorrectTicketValue();
-        IncorrectInvestment incorrect = new IncorrectInvestment();
+    public void testEvaluationExceptionDuringEvaluation() throws EvaluationException, RatioDoesNotExistException, TicketDoesNotExistException {
+        StockExchange value = new CorrectTicketValue();
+        Investment incorrect = new IncorrectInvestment();
         Money result = incorrect.evaluate(null, null, value);
     }
-    
+
 }

@@ -4,9 +4,8 @@ import data.*;
 import portfolio.*;
 import static org.junit.Assert.*;
 import org.junit.Test;
-import services.MoneyExchange;
-import services.RatioDoesNotExistException;
-import services.StockExchange;
+import services.*;
+
 
 import java.math.BigDecimal;
 
@@ -33,7 +32,7 @@ public class CashTest {
     public void testCorrectEvaluate() throws EvaluationException, RatioDoesNotExistException {
         Money money = new Money (new BigDecimal(15),new Currency("Euros"));
         Cash cash = new Cash (money);
-        CorrectRatio moneyEx = new CorrectRatio();
+        MoneyExchange moneyEx = new CorrectRatio();
         Money result = cash.evaluate(new Currency ("Dollars"), moneyEx, null);
         assertEquals(new BigDecimal("36.00"), result.getQuantity());
         assertEquals("Dollars", result.getCurrency().toString());
@@ -42,15 +41,15 @@ public class CashTest {
     public void testRatioDoesNotExistExceptionOnEvaluate() throws EvaluationException, RatioDoesNotExistException {
         Money money = new Money (new BigDecimal(15),new Currency("Euros"));
         Cash cash = new Cash (money);
-        IncorrectRatio moneyEx = new IncorrectRatio();
+        MoneyExchange moneyEx = new IncorrectRatio();
         Money result = cash.evaluate(new Currency ("Dollars"), moneyEx, null);
     }
     @Test(expected = EvaluationException.class)
-    public void testEvaluationExceptionDuringEvaluation() throws EvaluationException, RatioDoesNotExistException {
+    public void testEvaluationExceptionDuringEvaluation() throws EvaluationException, RatioDoesNotExistException, TicketDoesNotExistException {
         Money money = new Money (new BigDecimal(15),new Currency("Euros"));
         Cash cash = new Cash (money);
         CorrectRatio moneyEx = new CorrectRatio();
-        IncorrectInvestment incorrect = new IncorrectInvestment();
+        Investment incorrect = new IncorrectInvestment();
         Money result = incorrect.evaluate((new Currency ("Dollars")), moneyEx, null);
     }
 }
