@@ -1,10 +1,7 @@
 package portfolio;
 
 import data.*;
-import services.MoneyExchange;
-import services.RatioDoesNotExistException;
-import services.StockExchange;
-import services.TicketDoesNotExistException;
+import services.*;
 
 
 public interface Investment {
