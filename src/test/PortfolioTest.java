@@ -61,7 +61,8 @@ public class PortfolioTest {
         Portfolio portfolio = new Portfolio();
         portfolio.addInvestment(new CorrectInvestmentEuros());
         portfolio.addInvestment(new CorrectInvestmentDollars());
-        Money result = portfolio.evaluate(new Currency("Euros"),null, null);
+        MoneyExchange moneyEx = new CorrectRatio();
+        Money result = portfolio.evaluate(new Currency("Euros"),moneyEx, null);
         assertEquals("70.06", result.getQuantity().toString());
         assertEquals("Euros", result.getCurrency().toString());
     }
