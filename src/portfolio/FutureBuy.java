@@ -26,8 +26,8 @@ public class FutureBuy implements Investment{
         if (pacted.getCurrency().equals(actual.getCurrency())) {
             return new Money (actual.getQuantity().subtract(pacted.getQuantity()), pacted.getCurrency());
         } else {
-            Money changed = actual.change(moneyEx.exchangeRatio(currencyTo, actual.getCurrency()), currencyTo);
-            return new Money (changed.getQuantity().subtract(pacted.getQuantity()), pacted.getCurrency());
+            Money exchanged = actual.change(moneyEx.exchangeRatio(currencyTo, actual.getCurrency()), currencyTo);
+            return new Money (exchanged.getQuantity().subtract(pacted.getQuantity()), pacted.getCurrency());
         }
     }
 }
