@@ -21,12 +21,13 @@ public class Portfolio implements Investment {
         int i = 0;
         for (i = 0; i < this.list.size(); i++) {
             investment = this.list.get(i);
-            if (result.getCurrency().equals(currencyTo)) {
-                result.add(investment.evaluate(currencyTo,moneyEx, stockExchange));
+            Money invested = investment.evaluate(currencyTo, moneyEx, stockExchange);
+            if (result.getCurrency().equals(invested.getCurrency())) {
+                result = result.add(invested);
+                ;
             } else {
-                Money change = investment.evaluate(result.getCurrency(), moneyEx, stockExchange);
-                change = change.change(moneyEx.exchangeRatio(change.getCurrency(), currencyTo), currencyTo);
-                result = result.add(change);
+                invested = invested.change(moneyEx.exchangeRatio(invested.getCurrency(), result.getCurrency()), result.getCurrency());
+                result = result.add(invested);
             }
         }
         return result;
